@@ -1,7 +1,9 @@
 package com.springbootRestAPI.emsCurdDatabase.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,13 +62,15 @@ public class employeeController {
 
     // Build Get all Employees REST API
     @GetMapping()
-    public ResponseEntity<List<employeeDto>> getAllEmployees() {
+    public ResponseEntity<?> getAllEmployees() {
 
         List<employeeDto> employees = EmployeeService.getAllEmployees();
-        if (employees.size() <= 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(employees); // 200 status
+        if (employees.isEmpty()) {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "No employees found");
+        return ResponseEntity.ok(response);
+    }
+    return ResponseEntity.ok(employees); // 200 status
         // List<employeeDto> employees = EmployeeService.getAllEmployees();
         // return ResponseEntity.ok(employees);
     }
